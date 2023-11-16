@@ -26,24 +26,24 @@ const Chat = () => {
     e.preventDefault();
     if (newMessage.trim() === '') return;
     let ts = new Date();
-    setMessages([...messages, {
+    let newMessages = [...messages, {
       sender: "Shahrukh",
       msg: newMessage,
       ts: `${ts.getHours()}:${ts.getMinutes()}`,
-    }]);
+    }]
+    setMessages(newMessages);
 
     axios.get(`http://localhost:8000/ask?q=${encodeURIComponent(newMessage)}`)
       .then(function (response) {
         ts = new Date();
-        setMessages([...messages, {
+        setMessages([...newMessages, {
           sender: "ChatGPT",
           msg: response.data.text,
           ts: `${ts.getHours()}:${ts.getMinutes()}`,
         }])
-
+        setNewMessage("");
       })
       .catch(function (error) {
-
         console.log(error);
       });
 
